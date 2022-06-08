@@ -34,6 +34,3 @@ class UserConfig:
 
 
 user_config = UserConfig()
-loop = asyncio.get_event_loop()
-
-nest_asyncio.apply()

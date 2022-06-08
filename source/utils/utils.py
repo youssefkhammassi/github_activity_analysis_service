@@ -1,5 +1,8 @@
+import asyncio
 from datetime import timedelta, datetime
 from typing import List, Dict
+
+import nest_asyncio
 
 
 def average_time_between_list_datetimes(list_of_dates):
@@ -26,3 +29,7 @@ def count_days_from_list_datetimes(list_of_dates: List[datetime]) -> dict:
         else:
             days_count[day] = 1
     return days_count
+
+loop = asyncio.get_event_loop()
+
+nest_asyncio.apply()

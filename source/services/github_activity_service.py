@@ -1,13 +1,12 @@
 import itertools
 from datetime import timedelta, datetime, timezone
 from dateutil import parser
-from typing import Optional, Dict
+from typing import Optional
 
-from config.base import loop
 from source.schemas import github_activity_schema as gh_activity_schema
 from source.services.common_github_activity_service import CommonGithubActivityService
 from source.utils.url_generator import generate_github_events_url
-from source.utils.utils import average_time_between_list_datetimes, count_days_from_list_datetimes
+from source.utils.utils import average_time_between_list_datetimes, count_days_from_list_datetimes, loop
 
 
 class GithubActivityService(CommonGithubActivityService):
