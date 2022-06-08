@@ -1,0 +1,15 @@
+.DS_Store
+.idea
+.vscode
+__pycache__
+.env
+.mypy_cache
+venv
+connexion
+venv/
+sphinx-documentation/_autosummary
+sphinx-documentation/html
+/.coverage
+/.coveragerc
+/.env_local
+/pytest.ini
