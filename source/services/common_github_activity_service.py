@@ -15,3 +15,15 @@ class CommonGithubActivityService(ABC):
     async def get_pull_events(self, owner: str, repo: str) -> gh_activity_schema.ActivityOverview:
         """get all repository pull requests events"""
         return NotImplementedError
+
+    async def get_issues_events(self, owner: str, repo: str) -> gh_activity_schema.ActivityOverview:
+        """get all repository issues events"""
+        return NotImplementedError
+
+    async def get_watch_events(self, owner: str, repo: str) -> gh_activity_schema.ActivityOverview:
+        """get all repository watch events"""
+        return NotImplementedError
+
+    async def get_events_grouped(self, owner: str, repo: str, offset: Optional[int]) -> gh_activity_schema.ActivityOverview:
+        """get all repository watch events"""
+        return NotImplementedError

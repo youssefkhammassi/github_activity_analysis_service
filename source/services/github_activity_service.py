@@ -1,4 +1,7 @@
 import itertools
+from datetime import timedelta, datetime, timezone
+from dateutil import parser
+from typing import Optional
 
 from config.base import loop
 from source.schemas import github_activity_schema as gh_activity_schema
@@ -9,6 +12,13 @@ from source.utils.utils import average_time_between_list_datetimes
 
 class GithubActivityService(CommonGithubActivityService):
     async def get_events(self, owner: str, repo: str) -> gh_activity_schema.ActivityOverview:
+        """
+        get all repository events
+        input:
+            owner: str
+            repo: str
+        output: ActivityOverview
+        """
         url = generate_github_events_url(owner=owner, repo=repo)
         response = await self._api.handle_api_response(url=url)
         flatten_response = list(itertools.chain.from_iterable(response))
@@ -18,6 +28,13 @@ class GithubActivityService(CommonGithubActivityService):
         return activity_overview
 
     async def get_pull_events(self, owner: str, repo: str) -> gh_activity_schema.PullRequestsActivityOverview:
+        """
+        get all repository pull requests events
+        input:
+            owner: str
+            repo: str
+        output: PullRequestsActivityOverview
+        """
         url = generate_github_events_url(owner=owner, repo=repo)
         response = loop.run_until_complete(self._api.handle_api_response(url=url))
         flatten_response = list(itertools.chain.from_iterable(response))
@@ -35,3 +52,64 @@ class GithubActivityService(CommonGithubActivityService):
             activity=list_of_pull_request_events
         )
         return pulls_activity_overview
+
+    async def get_watch_events(self, owner: str, repo: str) -> gh_activity_schema.ActivityOverview:
+        """
+        get all repository watch events
+        input:
+            owner: str
+            repo: str
+        output: ActivityOverview
+        """
+        url = generate_github_events_url(owner=owner, repo=repo)
+        response = await self._api.handle_api_response(url=url)
+        flatten_response = list(itertools.chain.from_iterable(response))
+        list_of_watch_events = [event for event in flatten_response if event.get('type') == 'WatchEvent']
+        activity_overview = gh_activity_schema.ActivityOverview(repository=repo,
+                                                                owner=owner,
+                                                                activity=list_of_watch_events)
+        return activity_overview
+
+    async def get_issues_events(self, owner: str, repo: str) -> gh_activity_schema.ActivityOverview:
+        """
+        get all repository issues events
+        input:
+            owner: str
+            repo: str
+        output: ActivityOverview
+        """
+        url = generate_github_events_url(owner=owner, repo=repo)
+        response = await self._api.handle_api_response(url=url)
+        flatten_response = list(itertools.chain.from_iterable(response))
+        list_of_issues_events = [event for event in flatten_response if event.get('type') == 'IssuesEvent']
+        activity_overview = gh_activity_schema.ActivityOverview(repository=repo,
+                                                                owner=owner,
+                                                                activity=list_of_issues_events)
+        return activity_overview
+
+    async def get_events_grouped(self, owner: str, repo: str,
+                                 offset: Optional[int]) -> gh_activity_schema.ActivityGroupOverview:
+        """
+        get all repository events grouped by event types with offset
+        input:
+            owner: str
+            repo: str
+            offset: Optional[int]
+        output: ActivityGroupOverview
+        """
+        url = generate_github_events_url(owner=owner, repo=repo)
+        response = await self._api.handle_api_response(url=url)
+        flatten_response = list(itertools.chain.from_iterable(response))
+        activities = dict(PullRequestEvent=[], WatchEvent=[], IssuesEvent=[])
+        count = 0
+        for event in flatten_response:
+            if event.get('type') in activities.keys() and (
+                    timedelta(minutes=offset) >= datetime.now(timezone.utc) - parser.parse(event.get('created_at')) if offset else True):
+                activities[event.get('type')].append(event)
+                count += 1
+        activity_overview = gh_activity_schema.ActivityGroupOverview(repository=repo,
+                                                                     owner=owner,
+                                                                     activity=activities,
+                                                                     count=count,
+                                                                     offset=offset)
+        return activity_overview

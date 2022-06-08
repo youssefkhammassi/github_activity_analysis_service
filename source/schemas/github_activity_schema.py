@@ -42,6 +42,18 @@ class ActivityOverview(CommonModel):
     activity: List[GithubEventCommonModel]
 
 
+class GithubActivityTypesModel(CommonModel):
+    PullRequestEvent: List[GithubEventCommonModel]
+    IssuesEvent: List[GithubEventCommonModel]
+    WatchEvent: List[GithubEventCommonModel]
+
+
+class ActivityGroupOverview(ActivityOverview):
+    count: int
+    activity: GithubActivityTypesModel
+    offset: Optional[int]
+
+
 class PullRequestsActivityOverview(CommonModel):
     average_duration_between_pulls: str
     repository: str
