@@ -9,6 +9,9 @@ from enum import Enum
 
 
 class PyUUID(UUID):
+    """
+    A UUID that is serialized as a string.
+    """
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
@@ -28,6 +31,9 @@ class PyUUID(UUID):
 
 
 class CommonModel(BaseModel):
+    """
+    Common Base model for all models.
+    """
     class Config:
         orm_mode = True
         arbitrary_types_allowed = True

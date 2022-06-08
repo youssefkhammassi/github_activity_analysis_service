@@ -21,7 +21,6 @@ class HeaderAuth:
 
 
 class AuthHandler:
-
     def __init__(self, encryption_key):
         self.encryption_key = encryption_key
         self.fermet_tool = Fernet(self.encryption_key)
@@ -32,8 +31,6 @@ class AuthHandler:
 
         user_dict = self.decrypt_user_info(user)
 
-        if 'isAdmin' in user_dict:
-            user_dict['is_admin'] = user_dict.pop('isAdmin', None)
         try:
             user_model = User.parse_obj(user_dict)
         except ValidationError as e:
