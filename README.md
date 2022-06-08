@@ -4,7 +4,7 @@ This service is used to analyze the GitHub activity of a repository.
 In This service, we use the GitHub API to get the activity of a repository.
 We extract the activity of the repository, handle it then we send it to the frontend in order to display it.
 
-![C4 Model](C4 Model.jpg)
+![C4 Model](https://imgur.com/wBO3lRZ.png)
 
 ## We implemented the following features:
  - get the activity of a repository and group it by event type
