@@ -13,7 +13,7 @@ class Config:
         """
         :param config_parser: instance of class to read & write configuration files (INI files)
         """
-        #Fetch env vars passed in the helm chart that start with MIRA_
+        #Fetch env vars passed in the deployment process that start with LELY_
         self.env_var = dict(filter(lambda item: item[0].startswith(self.ENV_VAR_PREFIX_NAME), os.environ.items()))
         if ini_file is None:
             config_parser.read('config/app.ini')
