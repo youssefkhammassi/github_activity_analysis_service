@@ -18,7 +18,8 @@ We extract the activity of the repository, handle it then we send it to the fron
     - models 
  - Dependency Injection and Inversion
  - Object Oriented Programming 
- - Reliability, TDD, Authorization Handling 
+ - Reliability, TDD
+ - Authorization Handling: the user must be logged in to access the service 
  - Customized errors
 ## What can be improved:
  - integrate a mongoDB database to store the raw data also to be able to retrieve it later for analysis.
