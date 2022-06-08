@@ -1,4 +1,5 @@
-from bson import ObjectId
+from uuid import UUID
+
 from inflection import camelize
 from functools import partial
 
@@ -7,7 +8,7 @@ from pydantic.main import BaseModel
 from enum import Enum
 
 
-class PyObjectId(ObjectId):
+class PyUUID(UUID):
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
@@ -16,9 +17,10 @@ class PyObjectId(ObjectId):
     def validate(cls, v):
         if not v:
             return None
-        if not (ObjectId.is_valid(v)) and v:
-            raise ValueError("Invalid objectid")
-        return str(ObjectId(v))
+        try:
+            return UUID(v)
+        except ValueError:
+            raise ValueError("Invalid UUID")
 
     @classmethod
     def __modify_schema__(cls, field_schema):
@@ -31,7 +33,7 @@ class CommonModel(BaseModel):
         arbitrary_types_allowed = True
         allow_population_by_field_name = True
         use_enum_values = True
-        json_encoders = {PyObjectId: str}
+        json_encoders = {PyUUID: str}
 
 
 class CommonModelWithExtra(BaseModel):
