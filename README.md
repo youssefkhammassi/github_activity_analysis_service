@@ -1,1 +1,1 @@
-# github_activity_analysis_service
+# GITHUB ACTIVITY ANALYSIS SERVICE
