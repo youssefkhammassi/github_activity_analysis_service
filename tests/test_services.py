@@ -1,5 +1,5 @@
 import unittest
-from unittest import mock
+from unittest import mock, IsolatedAsyncioTestCase
 
 import pytest as pytest
 
@@ -12,7 +12,6 @@ class TestServices(unittest.TestCase):
     github_api_connector = mock.Mock(spec=GithubApiConnector)
     github_api_connector.handle_api_response.return_value = mock_response
 
-    @pytest.mark.asyncic
     async def test_github_activity_service(self):
         github_activity_service = GithubActivityService(api_service=self.github_api_connector)
         response = await github_activity_service.get_events(owner='youssefkhammassi', repo='github_activity_analysis_service')
