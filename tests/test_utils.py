@@ -1,8 +1,8 @@
 import unittest
 from datetime import timedelta, datetime
 
-from source.utils.utils import average_time_between_list_datetimes, count_days_from_list_datetimes
 from source.utils.url_generator import generate_github_events_url
+from source.utils.utils import average_time_between_list_datetimes, count_days_from_list_datetimes
 
 
 class TestUtils(unittest.TestCase):

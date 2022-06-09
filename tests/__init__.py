@@ -1,4 +1,4 @@
-mock_response = [{
+mock_response = [[{
     "id": "22235549281",
     "type": "PushEvent",
     "actor": {
@@ -787,4 +787,4 @@ mock_response = [{
         },
         "public": True,
         "created_at": "2022-06-08T20:35:40Z"
-    }]
+    }]]

@@ -19,7 +19,7 @@ class GithubActivityService(CommonGithubActivityService):
         output: ActivityOverview
         """
         url = generate_github_events_url(owner=owner, repo=repo)
-        response = await self._api.handle_api_response(url=url)
+        response = loop.run_until_complete(self._api.handle_api_response(url=url))
         flatten_response = list(itertools.chain.from_iterable(response))
         activity_overview = gh_activity_schema.ActivityOverview(repository=repo,
                                                                 owner=owner,
@@ -61,7 +61,7 @@ class GithubActivityService(CommonGithubActivityService):
         output: ActivityOverview
         """
         url = generate_github_events_url(owner=owner, repo=repo)
-        response = await self._api.handle_api_response(url=url)
+        response = loop.run_until_complete(self._api.handle_api_response(url=url))
         flatten_response = list(itertools.chain.from_iterable(response))
         list_of_watch_events = [event for event in flatten_response if event.get('type') == 'WatchEvent']
         activity_overview = gh_activity_schema.ActivityOverview(repository=repo,
@@ -78,7 +78,7 @@ class GithubActivityService(CommonGithubActivityService):
         output: ActivityOverview
         """
         url = generate_github_events_url(owner=owner, repo=repo)
-        response = await self._api.handle_api_response(url=url)
+        response = loop.run_until_complete(self._api.handle_api_response(url=url))
         flatten_response = list(itertools.chain.from_iterable(response))
         list_of_issues_events = [event for event in flatten_response if event.get('type') == 'IssuesEvent']
         activity_overview = gh_activity_schema.ActivityOverview(repository=repo,
@@ -97,7 +97,7 @@ class GithubActivityService(CommonGithubActivityService):
         output: ActivityGroupOverview
         """
         url = generate_github_events_url(owner=owner, repo=repo)
-        response = await self._api.handle_api_response(url=url)
+        response = loop.run_until_complete(self._api.handle_api_response(url=url))
         flatten_response = list(itertools.chain.from_iterable(response))
         activities = dict(PullRequestEvent=[], WatchEvent=[], IssuesEvent=[])
         count = 0
@@ -124,7 +124,7 @@ class GithubActivityService(CommonGithubActivityService):
         output: Dict[datetime, int]
         """
         url = generate_github_events_url(owner=owner, repo=repo)
-        response = await self._api.handle_api_response(url=url)
+        response = loop.run_until_complete(self._api.handle_api_response(url=url))
         flatten_response = list(itertools.chain.from_iterable(response))
         list_of_dates = [parser.parse(
                         event.get('created_at')) for event in flatten_response if
@@ -141,7 +141,7 @@ class GithubActivityService(CommonGithubActivityService):
         output: Dict[datetime, int]
         """
         url = generate_github_events_url(owner=owner, repo=repo)
-        response = await self._api.handle_api_response(url=url)
+        response = loop.run_until_complete(self._api.handle_api_response(url=url))
         flatten_response = list(itertools.chain.from_iterable(response))
         list_of_dates = [parser.parse(
                         event.get('created_at')) for event in flatten_response if
@@ -158,7 +158,7 @@ class GithubActivityService(CommonGithubActivityService):
         output: Dict[datetime, int]
         """
         url = generate_github_events_url(owner=owner, repo=repo)
-        response = await self._api.handle_api_response(url=url)
+        response = loop.run_until_complete(self._api.handle_api_response(url=url))
         flatten_response = list(itertools.chain.from_iterable(response))
         list_of_dates = [parser.parse(
                         event.get('created_at')) for event in flatten_response if

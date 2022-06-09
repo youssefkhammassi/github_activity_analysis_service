@@ -54,7 +54,7 @@ async def get_events(
 async def get_pull_events(
         owner: str = Path(...),
         repo: str = Path(...),
-        user: User = Depends(user_config.authorize),
+        #user: User = Depends(user_config.authorize),
         github_activity_service: CommonGithubActivityService = Depends(Provide[Container.github_activity_service])
 ) -> gh_activity_schema.PullRequestsActivityOverview:
     """
@@ -66,33 +66,6 @@ async def get_pull_events(
     """
     try:
         return await github_activity_service.get_pull_events(
-            owner=owner,
-            repo=repo
-        )
-    except Exception as e:
-        raise apis_exceptions.ApiNotValidGithubURL(detail=str(e)) from e
-
-
-@github_activity_router.get('/{owner}/{repo}/events/pulls',
-                            responses=gaas_config.responses_code,
-                            response_model=gh_activity_schema.PullRequestsActivityOverview
-                            )
-@inject
-async def get_watch_events(
-        owner: str = Path(...),
-        repo: str = Path(...),
-        user: User = Depends(user_config.authorize),
-        github_activity_service: CommonGithubActivityService = Depends(Provide[Container.github_activity_service])
-) -> gh_activity_schema.ActivityOverview:
-    """
-    get all repository watch events
-    input:
-        owner: str
-        repo: str
-    output: PullRequestsActivityOverview
-    """
-    try:
-        return await github_activity_service.get_watch_events(
             owner=owner,
             repo=repo
         )
